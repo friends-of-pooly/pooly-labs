@@ -1,0 +1,108 @@
+{
+    "baseBranch": "origin/master",
+    "npmClient": "npm",
+    "pipeline": {
+        "build": {
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^build"]
+        },
+        "compile": {
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^compile"]
+        },
+        "app:build": {
+            "outputs": [
+                "out/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^app:build"]
+        },
+        "app:start": {
+            "outputs": [
+                "out/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^app:start"]
+        },
+        "app:export": {
+            "outputs": [
+                "out/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^app:export"]
+        },
+        "export:github": {
+            "dependsOn": ["^export:github"]
+        },
+        "package:build": {
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^package:build"]
+        },
+        "package:watch": {
+            "outputs": [
+                "dist/**",
+                ".next/**",
+                "public/dist/**"
+            ],
+            "dependsOn": ["^package:watch"]
+        },
+        "dev": {
+            "cache": false,
+            "dependsOn": ["package:build", "^dev"]
+        },
+        "app:dev": {
+            "cache": false,
+            "dependsOn": ["package:watch", "^app:dev"]
+        },
+        "test": {
+            "dependsOn": ["^build"],
+            "outputs": [
+                "coverage/**"
+            ]
+        },
+        "lint": {
+            "outputs": [],
+            "dependsOn": ["^lint"]
+        },
+        "lint:fix": {
+            "outputs": [],
+            "dependsOn": ["^lint:fix"]
+        },
+        "package:lint": {
+            "outputs": [],
+            "dependsOn": ["^package:lint"]
+        },
+        "clean": {
+            "outputs": []
+        },
+        "clean:test": {
+            "outputs": [],
+            "dependsOn": ["^clean:test"]
+        },
+        "docs": {
+            "outputs": [
+                "docs/**"
+            ]
+        },
+        "docs:html": {
+            "outputs": [
+                "docs/**"
+            ]
+        }
+    }
+}
