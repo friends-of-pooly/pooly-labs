@@ -3,6 +3,7 @@ import '@typechain/hardhat';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
+import 'hardhat-dependency-compiler';
 import 'hardhat-abi-exporter';
 import 'hardhat-deploy';
 import 'hardhat-deploy-ethers';
@@ -25,6 +26,21 @@ const config: HardhatUserConfig = {
   typechain: {
     outDir: 'types',
     target: 'ethers-v5',
+  },
+  external: {
+    contracts: [
+      {
+        artifacts: '@pooly-cards/svg-lib-sol/contracts/artifacts',
+      },
+    ],
+  },
+  dependencyCompiler: {
+    paths: [
+      '@pooly-cards/svg-lib-sol/contracts/libraries/SVG.sol',
+      '@pooly-cards/svg-lib-sol/contracts/libraries/SVGUtils.sol',
+      '@pooly-cards/svg-lib-sol/contracts/SVGColor.sol',
+      '@pooly-cards/svg-lib-sol/contracts/SVGWidgets.sol'
+    ],
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
