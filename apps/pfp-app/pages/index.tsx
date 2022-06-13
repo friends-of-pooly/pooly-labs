@@ -5,16 +5,17 @@ import { useContractRead } from 'wagmi'
 import abi from '@pooly-cards/pooly-pfp-sol/abis/PoolyPFPRenderer.json'
 
 const Home: NextPage = () => {
-  
-
   const { data, isError, isLoading } = useContractRead(
     {
-      addressOrName: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+      addressOrName: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
       contractInterface: abi,
     },
-    'example',
+    'render',
+    {
+      args: [1],
+    }
   )
-
+  
   const [isMounted,setIsMounted] = useState(false); // Need this for the react-tooltip
 
   useEffect(() => {
@@ -42,8 +43,15 @@ const Home: NextPage = () => {
         }}>
           {
             isMounted && !isError &&
-            <div dangerouslySetInnerHTML={{ __html: data as unknown as string }} />
+            <div className=''>
+              <div dangerouslySetInnerHTML={{ __html: data as unknown as string }} />
+            </div>
           }
+          {/* {
+            isMounted && !isError &&
+            // <div dangerouslySetInnerHTML={{ __html: data2 as unknown as string }} />
+            <img src={data2}  alt=""/>
+          } */}
       </div>
     </div>
   );

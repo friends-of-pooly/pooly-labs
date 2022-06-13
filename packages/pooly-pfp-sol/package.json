@@ -10,7 +10,8 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "clean": "rm -rf cache/ artifacts/",
+    "cleanup": "rm -rf cache/ artifacts/",
+    "clean": "rm -rf node_modules/",
     "compile": "hardhat --show-stack-traces --max-memory 8192 compile",
     "coverage": "HIDE_DEPLOY_LOG=true OPTIMIZER_DISABLED=true hardhat coverage",
     "coverage:file": "HIDE_DEPLOY_LOG=true OPTIMIZER_DISABLED=true hardhat coverage --testfiles",
@@ -49,6 +50,7 @@
     "hardhat": "2.8.3",
     "hardhat-abi-exporter": "2.8.0",
     "hardhat-deploy": "0.10.5",
+    "hardhat-dependency-compiler": "1.1.2",
     "hardhat-deploy-ethers": "0.3.0-beta.13",
     "hardhat-ethers": "1.0.1",
     "hardhat-gas-reporter": "1.0.7",

@@ -1,11 +1,17 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.12;
-import './Utils.sol';
-
-// Core SVG utilitiy library which helps us construct
-// onchain SVG's with a simple, web-like API.
+pragma solidity ^0.8.13;
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "./SVGUtils.sol";
+/**
+    * @title SVG
+    * @author Kames Geraghty
+    * @notice SVG construction library using web-like API.
+    * @dev Original code from w1nt3r-eth/hot-chain-svg (https://github.com/w1nt3r-eth/hot-chain-svg)
+*/
 library svg {
-    /* MAIN ELEMENTS */
+    using Strings for uint256;
+    using Strings for uint8;
+
     function g(string memory _props, string memory _children)
         internal
         pure
@@ -69,6 +75,14 @@ library svg {
     {
         return el('rect', _props);
     }
+    
+    function stop(string memory _props)
+        internal
+        pure
+        returns (string memory)
+    {
+        return el('stop', _props);
+    }
 
     function filter(string memory _props, string memory _children)
         internal
@@ -76,6 +90,14 @@ library svg {
         returns (string memory)
     {
         return el('filter', _props, _children);
+    }
+    
+    function defs(string memory _children)
+        internal
+        pure
+        returns (string memory)
+    {
+        return el('defs', "", _children);
     }
 
     function cdata(string memory _content)
@@ -114,7 +136,7 @@ library svg {
                 string.concat(
                     prop('stop-color', stopColor),
                     ' ',
-                    prop('offset', string.concat(utils.uint2str(offset), '%')),
+                    prop('offset', string.concat(svgUtils.uint2str(offset), '%')),
                     ' ',
                     _props
                 )
@@ -139,6 +161,18 @@ library svg {
                 'image',
                 string.concat(prop('href', _href), ' ', _props)
             );
+    }
+
+    function start(
+    ) internal pure returns (string memory) {
+        return string.concat(
+            '<svg width="400" height="400" style="background:#541563" ', 'viewBox="0 0 400 400"', 'xmlns="http://www.w3.org/2000/svg" ','>'
+        );
+    }
+
+    function end(
+    ) internal pure returns (bytes memory) {
+        return('</svg>');
     }
 
     /* COMMON */
@@ -184,5 +218,30 @@ library svg {
         returns (string memory)
     {
         return string.concat(_key, '=', '"', _val, '" ');
+    }
+
+    function stringifyIntSet(
+        bytes memory _data,
+        uint256 _offset,
+        uint256 _len
+    ) public pure returns (bytes memory) { 
+        bytes memory res;
+        require (_data.length >= _offset + _len, 'Out of range');
+        for (uint i = _offset ; i < _offset + _len ; i++) {
+            res = abi.encodePacked(
+                res,
+                byte2uint8(_data, i).toString(),
+                ' '
+            );
+        }
+        return res;
+    }
+
+    function byte2uint8(
+        bytes memory _data,
+        uint256 _offset
+    ) public pure returns (uint8) { 
+        require (_data.length > _offset, 'Out of range');
+        return uint8(_data[_offset]);
     }
 }
